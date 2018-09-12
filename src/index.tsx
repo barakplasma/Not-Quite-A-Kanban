@@ -1,17 +1,17 @@
-import * as React from "react";
-import { render } from "react-dom";
-import Task from "./Task";
-import TaskEntity, { StatusMessage } from "./Business_Logic_Model/TaskEntity";
+import * as React from 'react';
+import { render } from 'react-dom';
+import Task from './Task';
+import TaskEntity, { StatusMessage } from './Business_Logic_Model/TaskEntity';
 
 const styles = {
-  fontFamily: "sans-serif",
-  textAlign: "center"
+  fontFamily: 'sans-serif',
+  textAlign: 'center'
 };
 
 const columns = {
-  display: "grid",
-  gridTemplateRows: "auto",
-  gridTemplateColumns: "1fr 1fr 1fr"
+  display: 'grid',
+  gridTemplateRows: 'auto',
+  gridTemplateColumns: '1fr 1fr 1fr'
 };
 
 class App extends React.Component<
@@ -32,23 +32,27 @@ class App extends React.Component<
   updateFromModel() {
     this.setState({ update: !this.state.update });
   }
-  displayType(statusMessage: StatusMessage, icon: string) {
+  displayType(statusMessage: StatusMessage) {
     return this.state.tasks
       .filter(task => task.status.display === statusMessage)
       .map((task, i) => (
-        <Task update={() => this.updateFromModel()} TaskEntity={task} key={task.name + i}/>
+        <Task
+          update={() => this.updateFromModel()}
+          TaskEntity={task}
+          key={task.name + i}
+        />
       ));
   }
 
-  handleTaskNameChange(event) {
+  handleTaskNameChange(event: React.ChangeEvent<HTMLInputElement>) {
     this.setState({ newTaskName: event.target.value });
   }
 
-  handleSubmitNewTask(event) {
+  handleSubmitNewTask(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     this.setState({
       tasks: [...this.state.tasks, new TaskEntity(this.state.newTaskName)],
-      newTaskName: ""
+      newTaskName: ''
     });
   }
 
@@ -56,7 +60,17 @@ class App extends React.Component<
     return (
       <div style={styles}>
         <h1>
-          {"\u2728"} Kanban Demo {"\u2728"}
+          <img
+            alt="microsoft sparkles"
+            src="../sparkles_2728.png"
+            height="20px"
+          />
+          Kanban Demo
+          <img
+            alt="microsoft sparkles"
+            src="../sparkles_2728.png"
+            height="20px"
+          />
         </h1>
         <div>
           <form onSubmit={this.handleSubmitNewTask}>
@@ -76,15 +90,15 @@ class App extends React.Component<
         </div>
         <div style={columns}>
           <div>
-            <h2 style={{ backgroundColor: "yellow" }}>ToDo</h2>
+            <h2 style={{ backgroundColor: 'yellow' }}>ToDo</h2>
             {this.displayType(StatusMessage.todo)}
           </div>
           <div>
-            <h2 style={{ backgroundColor: "pink" }}>In Progress</h2>
+            <h2 style={{ backgroundColor: 'pink' }}>In Progress</h2>
             {this.displayType(StatusMessage.in_progress)}
           </div>
           <div>
-            <h2 style={{ backgroundColor: "lightblue" }}>Done</h2>
+            <h2 style={{ backgroundColor: 'lightblue' }}>Done</h2>
             {this.displayType(StatusMessage.done)}
           </div>
         </div>
@@ -93,4 +107,4 @@ class App extends React.Component<
   }
 }
 
-render(<App />, document.getElementById("root"));
+render(<App />, document.getElementById('root'));

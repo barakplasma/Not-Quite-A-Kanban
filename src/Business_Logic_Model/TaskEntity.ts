@@ -1,15 +1,15 @@
-import * as SymbolTree from "symbol-tree";
+import SymbolTree from 'symbol-tree';
 
 export enum StatusMessage {
-  todo = "ToDo",
-  in_progress = "In Progress",
-  done = "Done"
+  todo = 'ToDo',
+  in_progress = 'In Progress',
+  done = 'Done'
 }
 
 class TaskEntity {
   public name: string;
   public status: { display: StatusMessage };
-  public workflow: any;
+  public workflow: SymbolTree;
 
   constructor(name: string) {
     this.name = name.slice(0, 29);
@@ -17,11 +17,11 @@ class TaskEntity {
     this.workflow = new SymbolTree();
 
     const todo = { display: StatusMessage.todo };
-    const in_progress = { display: StatusMessage.in_progress };
+    const inProgress = { display: StatusMessage.in_progress };
     const done = { display: StatusMessage.done };
 
-    this.workflow.insertBefore(in_progress, todo);
-    this.workflow.insertAfter(in_progress, done);
+    this.workflow.insertBefore(inProgress, todo);
+    this.workflow.insertAfter(inProgress, done);
     this.status = todo;
   }
   makeProgress() {
@@ -40,4 +40,14 @@ class TaskEntity {
     this.makeProgress();
   }
 }
+export interface InterfaceForTaskEntityBusinessLogic {
+  name: string;
+  status: { display: StatusMessage };
+  workflow: SymbolTree;
+  makeProgress(): void;
+  moveBackwards(): void;
+  startProgress(): void;
+  finish(): void;
+}
+
 export default TaskEntity;
